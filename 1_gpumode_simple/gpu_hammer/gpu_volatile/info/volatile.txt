@@ -1,0 +1,14 @@
+F.3.3.3. Volatile Qualifier
+
+The compiler is free to optimize reads and writes to global or shared memory 
+(for example, by caching global reads into registers or L1 cache) as long as it respects the memory ordering semantics of memory fence functions
+(Memory Fence Functions) and memory visibility semantics of synchronization functions (Synchronization Functions).
+
+These optimizations can be disabled using the volatile keyword: 
+If a variable located in global or shared memory is declared as volatile, 
+the compiler assumes that its value can be changed or used at any time by another thread and therefore 
+any reference to this variable compiles to an actual memory read or write instruction.
+
+Read more at: http://docs.nvidia.com/cuda/cuda-c-programming-guide/index.html#ixzz582I452cp
+Follow us: @GPUComputing on Twitter | NVIDIA on Facebook
+

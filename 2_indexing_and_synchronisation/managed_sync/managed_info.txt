@@ -1,0 +1,16 @@
+Memory allocated with cudaMallocManaged cannot be accessed by the host,
+until the device has finished the operations. ( cudaDeviceSynchronize())
+
+
+Error : Bus error (core dumped)
+
+How to run:
+
+$make
+
+How to run simple:
+$ ./managed_error
+
+How to produce error:
+$ ./managed_error -e 1
+

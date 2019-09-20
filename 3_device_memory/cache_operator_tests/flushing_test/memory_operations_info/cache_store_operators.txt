@@ -1,0 +1,26 @@
+.wb 	
+
+Cache write-back all coherent levels.
+The default store instruction cache operation is st.wb, which writes back cache lines of coherent cache levels with normal eviction policy.
+If one thread stores to global memory, bypassing its L1 cache, and a second thread in a different SM later loads from that address via a different L1 cache with ld.ca, the second thread may get a hit on stale L1 cache data, rather than get the data from L2 or memory stored by the first thread.
+The driver must invalidate global L1 cache lines between dependent grids of thread arrays. Stores by the first grid program are then correctly missed in L1 and fetched by the second grid program issuing default ld.ca loads.
+
+
+.cg 	
+
+Cache at global level (cache in L2 and below, not L1).
+Use st.cg to cache global store data only globally, bypassing the L1 cache, and cache only in the L2 cache.
+
+
+.cs 	
+Cache streaming, likely to be accessed once.
+The st.cs store cached-streaming operation allocates cache lines with evict-first policy to limit cache pollution by streaming output data.
+
+
+.wt 	
+Cache write-through (to system memory).
+The st.wt store write-through operation applied to a global System Memory address writes through the L2 cache.
+
+
+Read more at: http://docs.nvidia.com/cuda/parallel-thread-execution/index.html#ixzz583OSM6Hj
+

@@ -1,0 +1,31 @@
+	
+.ca 	
+
+Cache at all levels, likely to be accessed again.
+
+The default load instruction cache operation is ld.ca, which allocates cache lines in all levels (L1 and L2) with normal eviction policy. Global data is coherent at the L2 level, but multiple L1 caches are not coherent for global data. If one thread stores to global memory via one L1 cache, and a second thread loads that address via a second L1 cache with ld.ca, the second thread may get stale L1 cache data, rather than the data stored by the first thread. The driver must invalidate global L1 cache lines between dependent grids of parallel threads. Stores by the first grid program are then correctly fetched by the second grid program issuing default ld.ca loads cached in L1.
+
+.cg 	
+
+Cache at global level (cache in L2 and below, not L1).
+Use ld.cg to cache loads only globally, bypassing the L1 cache, and cache only in the L2 cache.
+
+
+.cs 	
+
+Cache streaming, likely to be accessed once.
+The ld.cs load cached streaming operation allocates global lines with evict-first policy in L1 and L2 to limit cache pollution by temporary streaming data that may be accessed once or twice. When ld.cs is applied to a Local window address, it performs the ld.lu operation.
+
+
+.lu 	
+Last use.
+The compiler/programmer may use ld.lu when restoring spilled registers and popping function stack frames to avoid needless write-backs of lines that will not be used again. The ld.lu instruction performs a load cached streaming operation (ld.cs) on global addresses.
+
+
+.cv 	
+
+Don't cache and fetch again (consider cached system memory lines stale, fetch again).
+The ld.cv load operation applied to a global System Memory address invalidates (discards) a matching L2 line and re-fetches the line on each new load.
+
+Read more at: http://docs.nvidia.com/cuda/parallel-thread-execution/index.html#ixzz583O2QQSC
+
